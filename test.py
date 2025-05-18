@@ -2,7 +2,7 @@ import asyncio
 import random
 from playwright.async_api import async_playwright
 
-USERNAME = "abb2953901@gmail.com"
+USERNAME = "abb295390@gmail.com"
 PASSWORD = "123456789zyZY"
 
 async def human_behavior_simulation(page):
