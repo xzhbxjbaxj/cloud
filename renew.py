@@ -13,7 +13,7 @@ async def human_behavior_simulation(page):
     """)
     await page.emulate_media(color_scheme="dark")  # 模拟暗色模式偏好:ml-citation{ref="6" data="citationList"}
 
-async def renew_service(max_retries=3):
+async def renew_service(max_retries=2):
     async with async_playwright() as p:
         # 持久化浏览器上下文配置:ml-citation{ref="3,4" data="citationList"}
         context = await p.chromium.launch_persistent_context(
