@@ -3,8 +3,8 @@ import asyncio
 import random
 from playwright.async_api import async_playwright
 
-USERNAME = "abb295390@gmail.com"
-PASSWORD = "123456789zyZY"
+USERNAME = os.getenv("FC_USERNAME")
+PASSWORD = os.getenv("FC_PASSWORD")
 
 async def human_behavior_simulation(page):
     await page.evaluate("""Object.defineProperty(navigator, 'webdriver', {get: () => undefined})""")
