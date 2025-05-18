@@ -15,7 +15,7 @@ async def main():
         await page.goto("https://freecloud.ltd/login")
 
         # ✅ 等待用户名输入框加载完成，避免因渲染延迟报错
-        await page.wait_for_selector('input[name="username"]')
+        await page.wait_for_selector('input[name="username"]',timeout=60000)
 
         print("📝 填写表单")
         await page.fill('input[name="username"]', USERNAME)
