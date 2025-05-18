@@ -13,7 +13,8 @@ async def main():
 
         print("🔐 打开登录页")
         await page.goto("https://freecloud.ltd/login")
-
+        html = await page.content()
+        print(html)
         await page.locator('input[placeholder="用户名/邮箱/手机号"]').fill(USERNAME)
         await page.locator('input[placeholder="请输入登录密码"]').fill(PASSWORD)
         await page.click('button[type="submit"]')
