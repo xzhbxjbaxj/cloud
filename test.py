@@ -11,7 +11,7 @@ async def handle_loading(page):
         loading = await page.wait_for_selector("text='just a moment'", timeout=5000)
         if loading:
             print("⏳ 检测到加载提示，等待5秒...")
-            await asyncio.sleep(5)
+            await asyncio.sleep(2)
             return True
     except:
         return False
@@ -53,6 +53,7 @@ async def renew_service(max_retries=2):
                 print("🔐 开始初次登录流程")
                 await page.goto("https://freecloud.ltd/login", wait_until="networkidle")
                 await page.fill('input[name="username"]', USERNAME)
+                print(USERNAME)
                 await page.fill('input[name="password"]', PASSWORD)
                 await asyncio.sleep(random.uniform(0.5, 1.5))
                 await page.click('button[type="submit"]')
@@ -83,7 +84,7 @@ async def renew_service(max_retries=2):
                     submit_btn = await page.wait_for_selector(
                         "button[type='submit']", 
                         state="visible", 
-                        timeout=20000
+                        timeout=10000
                     )
                     await submit_btn.click(delay=random.randint(200, 500))
                     
