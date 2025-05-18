@@ -61,17 +61,17 @@ async def renew_service(max_retries=2):
                     submit_btn = await page.wait_for_selector(
                         "button[type='submit']", 
                         state="visible", 
-                        timeout=10000
+                        timeout=80000
                     )
                     await submit_btn.click(delay=random.randint(200, 500))
                     
                     # 验证操作结果:ml-citation{ref="5" data="citationList"}
                     try:
-                        await page.wait_for_selector(".success-toast", timeout=10000)
+                        await page.wait_for_selector(".success-toast", timeout=80000)
                         print("✅ 续费操作成功")
                         return
                     except:
-                        await page.wait_for_selector("text=续费成功", timeout=10000)
+                        await page.wait_for_selector("text=续费成功", timeout=80000)
                         print("✅ 续费操作成功")
                         return
                    
