@@ -52,7 +52,8 @@ async def renew_service(max_retries=2):
                     print(f"🔄 第{attempt}次续费尝试")
                     await page.goto("https://freecloud.ltd/server/detail/2378/renew", timeout=15000)
                     await asyncio.sleep(random.uniform(1, 3))
-                    
+                    page_source = await page.content()
+                    print(page_source)  # 打印源代码，或者你可以将其保存到文件中
                     
                     # 动态等待按钮可点击:ml-citation{ref="6" data="citationList"}
                     #submit_btn = page.locator("button[type='submit']")
