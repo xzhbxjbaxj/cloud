@@ -42,7 +42,7 @@ async def renew_action(page, max_retries):
         try:
             print(f"🔄 第{attempt}次尝试")
 
-            await page.goto("https://freecloud.ltd/server/detail/2378/renew", wait_until="networkidle")
+            await page.goto("https://freecloud.ltd/server/detail/2378/renew")
             await asyncio.sleep(1)
 
             if await handle_loading(page):
@@ -76,7 +76,7 @@ async def renew_service(max_retries=1):
             page = context.pages[0] if context.pages else await context.new_page()
             await human_behavior_simulation(page)
 
-            await page.goto("https://freecloud.ltd/server/detail/2378/renew", wait_until="networkidle")
+            await page.goto("https://freecloud.ltd/server/detail/2378/renew")
             await asyncio.sleep(1)
 
             if "login" in page.url:
