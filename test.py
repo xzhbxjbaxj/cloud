@@ -3,8 +3,10 @@ import asyncio
 import random
 from playwright.async_api import async_playwright
 
-USERNAME = os.getenv("FC_USERNAME")
-PASSWORD = os.getenv("FC_PASSWORD")
+#USERNAME = os.getenv("FC_USERNAME")
+#PASSWORD = os.getenv("FC_PASSWORD")
+USERNAME = "abb295390@gmail.com"
+PASSWORD ="123456789zyZY"
 async def handle_loading(page):
     """处理加载提示"""
     try:
@@ -53,11 +55,10 @@ async def renew_service(max_retries=2):
                 print("🔐 开始初次登录流程")
                 await page.goto("https://freecloud.ltd/login", wait_until="networkidle")
                 await page.fill('input[name="username"]', USERNAME)
-                print(USERNAME)
                 await page.fill('input[name="password"]', PASSWORD)
                 await asyncio.sleep(random.uniform(0.5, 1.5))
                 await page.click('button[type="submit"]')
-                
+                print("点击了")
                 await context.storage_state(path="auth.json")
             else:
                 print("🔄 加载已有登录状态")
