@@ -1,0 +1,27 @@
+name: FreeCloud Auto Renew
+
+on:
+  schedule:
+    - cron: '0 2 * * *'  # 每天 UTC+0 2:00，即北京时间 10:00
+  workflow_dispatch:
+
+jobs:
+  renew:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.11
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Run Renew Script
+        env:
+          FC_USERNAME: ${{ secrets.FC_USERNAME }}
+          FC_PASSWORD: ${{ secrets.FC_PASSWORD }}
+        run: python renew.py
