@@ -29,4 +29,4 @@ jobs:
           FC_USERNAME: ${{ secrets.FC_USERNAME }}
           FC_PASSWORD: ${{ secrets.FC_PASSWORD }}
         run: |
-          python freecloud2.py
+          python renew.py
