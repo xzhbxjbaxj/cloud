@@ -11,7 +11,7 @@ async def human_behavior_simulation(page):
 
 async def handle_loading(page):
     try:
-        loading = await page.wait_for_selector("text='just a moment'", timeout=5000)
+        loading = await page.wait_for_selector("text='just a moment'", timeout=4000)
         if loading:
             print("⏳ 检测到加载提示，等待1秒...")
             await asyncio.sleep(1)
@@ -26,13 +26,13 @@ async def submit_click_handler(page, element):
 
     try:
         await asyncio.wait_for(
-            page.wait_for_selector(".success-toast", timeout=10000),
+            page.wait_for_selector(".success-toast", timeout=2000),
             timeout=15
         )
         print("✅ 操作成功")
     except:
         await asyncio.wait_for(
-            page.wait_for_selector("text=续费成功", timeout=10000),
+            page.wait_for_selector("text=续费成功", timeout=2000),
             timeout=15
         )
         print("✅ 操作成功")
@@ -42,8 +42,8 @@ async def renew_action(page, max_retries):
         try:
             print(f"🔄 第{attempt}次尝试")
 
-            await page.goto("https://freecloud.ltd/server/detail/2378/renew")
-            await asyncio.sleep(1)
+            # await page.goto("https://freecloud.ltd/server/detail/2378/renew")
+            # await asyncio.sleep(1)
 
             if await handle_loading(page):
                 await page.reload(wait_until="networkidle")
@@ -52,14 +52,14 @@ async def renew_action(page, max_retries):
             submit_btn = await page.wait_for_selector(
                 "button[type='submit']",
                 state="attached",
-                timeout=10000
+                timeout=4000
             )
             await submit_click_handler(page, submit_btn)
             return True
         except Exception as e:
             print(f"⚠️ 尝试失败: {str(e)}")
-            if attempt == max_retries:
-                raise
+            # if attempt == max_retries:
+            #     raise
     return False
 
 async def renew_service(max_retries=1):
