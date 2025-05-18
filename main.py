@@ -54,11 +54,11 @@ async def renew_action(page, max_retries):
             #    "#submitRenew",
              #   timeout=4000
             #)
-         #   submit_btn = await page.wait_for_selector(
-         #       "button#submitRenew.btn.btn-primary",
-         #       timeout=4000
-       #     )
-            await page.wait_for_selector("xpath//button[@id='submitRenew']", timeout=4000)
+            submit_btn = await page.wait_for_selector(
+                "button#submitRenew.btn.btn-primary",
+                timeout=4000
+            )
+       #     await page.wait_for_selector("xpath//button[@id='submitRenew']", timeout=4000)
 
 
            #   submit_btn = await page.wait_for_selector(
