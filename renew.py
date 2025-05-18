@@ -40,7 +40,7 @@ async def renew_service(max_retries=3):
                 await page.fill('input[name="password"]', PASSWORD)
                 await asyncio.sleep(random.uniform(0.5, 1.5))
                 await page.click('button[type="submit"]')
-                await page.wait_for_selector("#dashboard", timeout=15000)
+                
                 await context.storage_state(path="auth.json")
             else:
                 print("🔄 加载已有登录状态")
