@@ -5,7 +5,7 @@ from playwright.async_api import async_playwright
 
 #USERNAME = os.getenv("FC_USERNAME")
 #PASSWORD = os.getenv("FC_PASSWORD")
-USERNAME = "abb295390@gmail.com"
+USERNAME = "abb29539q@gmail.com"
 PASSWORD ="123456789zyZY"
 async def handle_loading(page):
     """处理加载提示"""
