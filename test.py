@@ -49,11 +49,15 @@ async def renew_action(page, max_retries):
                 await page.reload(wait_until="networkidle")
                 await asyncio.sleep(1)
 
-            submit_btn = await page.wait_for_selector(
-                "button[type='submit']",
-                state="attached",
-                timeout=4000
-            )
+           # submit_btn = await page.wait_for_selector(
+            #    "#submitRenew",
+             #   timeout=4000
+            #)
+              submit_btn = await page.wait_for_selector(
+                 "button#submitRenew.btn.btn-primary",
+                  state="visible",
+                  timeout=4000
+              )
             await submit_click_handler(page, submit_btn)
             return True
         except Exception as e:
