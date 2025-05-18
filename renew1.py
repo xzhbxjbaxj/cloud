@@ -46,7 +46,7 @@ async def renew_service(max_retries=3):
                 await page.fill('input[name="password"]', PASSWORD)
                 await asyncio.sleep(random.uniform(1.0, 2.0))
                 await page.click('button[type="submit"]')
-                await page.wait_for_url("https://freecloud.ltd/server/lxc, timeout=15000)
+                await page.wait_for_url("https://freecloud.ltd/server/lxc", timeout=15000)
                 await context.storage_state(path="auth.json")
             else:
                 print("🔄 加载已有登录状态")
