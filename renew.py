@@ -64,9 +64,7 @@ async def renew_service(max_retries=2):
                     return
                 except Exception as e:
                     print(f"⚠️ 第{attempt}次尝试失败: {str(e)}")
-                    if attempt == max_retries:
-                        raise
-                    await asyncio.sleep(attempt * 5)  # 指数退避策略:ml-citation{ref="1" data="citationList"}
+                  
 
         finally:
             await context.close()
