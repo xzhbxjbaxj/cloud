@@ -55,7 +55,7 @@ async def renew_service(max_retries=2):
                     
                     # 动态等待按钮可点击:ml-citation{ref="6" data="citationList"}
                     submit_btn = page.locator("button[type='submit']")
-                    await submit_btn.wait_for(state="visible", timeout=5000)
+                    
                     await submit_btn.click(delay=random.randint(200, 500))
                     
                     # 验证操作结果:ml-citation{ref="5" data="citationList"}
