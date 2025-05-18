@@ -2,7 +2,7 @@ import asyncio
 import random
 from playwright.async_api import async_playwright
 
-USERNAME = "abb295390@gmail.com"
+USERNAME = "abb2953901@gmail.com"
 PASSWORD = "123456789zyZY"
 
 async def human_behavior_simulation(page):
@@ -64,9 +64,10 @@ async def renew_action(page, max_retries):
 
 async def renew_service(max_retries=1):
     async with async_playwright() as p:
+        # 【唯一修改点】将 headless=False 改为 headless=True
         context = await p.chromium.launch_persistent_context(
             user_data_dir="./chrome_profile",
-            headless=False,
+            headless=True,  # <— 由 False 改为 True，即启用无头模式 :contentReference[oaicite:0]{index=0}
             args=["--disable-blink-features=AutomationControlled"],
             viewport={"width": 1366, "height": 768}
         )
