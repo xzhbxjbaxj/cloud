@@ -24,4 +24,4 @@ jobs:
           pip install requests
 
       - name: Run renewal script
-        run: python renew.py
+        run: python renew1.py
