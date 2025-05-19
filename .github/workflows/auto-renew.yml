@@ -28,4 +28,4 @@ jobs:
         run: npx playwright install chromium --with-deps   # 仅安装 Chromium 及系统依赖 :contentReference[oaicite:0]{index=0}
 
       - name: 执行续费脚本
-        run: python main.py
+        run: python renew1.py
