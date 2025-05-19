@@ -21,13 +21,8 @@ jobs:
       - name: 📦 Install minimal dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install playwright
-
-      - name: 🎭 Install Chromium only (skip full browser set)
-        run: playwright install chromium
-
+      
       - name: 🔐 Run auto renew script
         env:
-          FC_USERNAME: ${{ secrets.FC_USERNAME }}
-          FC_PASSWORD: ${{ secrets.FC_PASSWORD }}
+          FC_URL: ${{ secrets.FC_URL }}
         run: python main.py
