@@ -1,89 +1,70 @@
 import os
-import asyncio
-import random
-from playwright.async_api import async_playwright
+import requests
+import urllib3
 
-USERNAME = os.getenv("FC_USERNAME")
-PASSWORD = os.getenv("FC_PASSWORD")
+# 忽略 SSL 警告
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
-async def human_behavior_simulation(page):
-    """模拟人类操作模式"""
-    await page.evaluate("""
-        Object.defineProperty(navigator, 'webdriver', {get: () => undefined})
-    """)
-    await page.emulate_media(color_scheme="dark")  # 模拟暗色模式偏好:ml-citation{ref="6" data="citationList"}
+# ✅ 登录成功后导出的 Cookie，可以手动填入，或通过登录流程动态获取
+COOKIES="sw110xy=hq17fleqsg3v09emh6dsij1tn6l5t6sq; cf_clearance=UBBlrexYwT..4zZIo87.V4n.1JjH9ZHihlx.0wuZFxY-1747619845-1.2.1.1-SO0kn6KLGpaKvt.AdsCtMpQclLKFbLke6J2ltHA50bp7BeuV6fJz8WUq6dZRu9sjgHS5tQDVj7Gmr_mvZjkVGjHK0PHg6j7eFULJnwaXLlcgw4Hi.oUW5oV.ZXK.54Ohjb7eSfhH.bjcwgpxACaRQyC8Fhz28NAkkfTIq1CNb8P0wA.maWm9lxLIywiqjHWc9J1vfXO0Kn6XxtArSTqC32F8Mo.ES_XzcAQe8NEhWb2_CEHTmaU1aaHXY5n6FJYBF1BW7Hl14BAA6b90D5fmXZ_V9V0Df_W5ZDB9ynsTPeHYaD7J3uWN7azn1K4IvG.1.OIlJNa6ghgKPAELHxPPPLzgfUDBm2w2qQgX06kZ94k"
 
-async def renew_service(max_retries=2):
-    async with async_playwright() as p:
-        # 持久化浏览器上下文配置:ml-citation{ref="3,4" data="citationList"}
-        context = await p.chromium.launch_persistent_context(
-            user_data_dir="./chrome_profile",
-            headless=True,
-            args=[
-                "--disable-blink-features=AutomationControlled",
-                "--disable-dev-shm-usage",
-                "--no-sandbox"
-            ],
-            viewport={"width": 1366, "height": 768},
-            user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36"
-        )
+def parse_cookie(cookie_str):
+    cookies = {}
+    for item in cookie_str.strip().split(";"):
+        if "=" in item:
+            k, v = item.strip().split("=", 1)
+            cookies[k] = v
+    return cookies
 
-        try:
-            page = context.pages[0] if context.pages else await context.new_page()
-            await human_behavior_simulation(page)
-            
-            # 初始化登录状态检查:ml-citation{ref="7" data="citationList"}
-            if not os.path.exists("auth.json"):
-                print("🔐 开始初次登录流程")
-                await page.goto("https://freecloud.ltd/login", wait_until="networkidle")
-                await page.fill('input[name="username"]', USERNAME)
-                await page.fill('input[name="password"]', PASSWORD)
-                await asyncio.sleep(random.uniform(0.5, 1.5))
-                await page.click('button[type="submit"]')
-                
-                await context.storage_state(path="auth.json")
-            else:
-                print("🔄 加载已有登录状态")
-                await context.add_cookies(open("auth.json", "r").read())
+cookies = parse_cookie(COOKIES)
 
-            # 续费操作重试逻辑:ml-citation{ref="1,5" data="citationList"}
-            for attempt in range(1, max_retries+1):
-                try:
-                    print(f"🔄 第{attempt}次续费尝试")
-                    await page.goto("https://freecloud.ltd/server/detail/2378/renew", timeout=15000)
-                    await asyncio.sleep(random.uniform(1, 3))
-                    page_source = await page.content()
-                    print(page_source)  # 打印源代码，或者你可以将其保存到文件中
-                    
-                    # 动态等待按钮可点击:ml-citation{ref="6" data="citationList"}
-                    #submit_btn = page.locator("button[type='submit']")
-                    #await submit_btn.wait_for(state="visible", timeout=5000)
-                    submit_btn = await page.wait_for_selector(
-                        "button[type='submit']", 
-                        state="visible", 
-                        timeout=20000
-                    )
-                    await submit_btn.click(delay=random.randint(200, 500))
-                    
-                    # 验证操作结果:ml-citation{ref="5" data="citationList"}
-                    try:
-                        await page.wait_for_selector(".success-toast", timeout=30000)
-                        print("✅ 续费操作成功")
-                        return
-                    except:
-                        await page.wait_for_selector("text=续费成功", timeout=30000)
-                        print("✅ 续费操作成功")
-                        return
-                   
-                except Exception as e:
-                    print(f"⚠️ 第{attempt}次尝试失败: {str(e)}")
-                  
+# 🌐 请求目标地址
+RENEW_API = "https://freecloud.ltd/server/detail/2378/renew"
 
-        finally:
-            await context.close()
+# 📦 请求载荷
+RENEW_PAYLOAD = {
+    "month": "1",
+    "calculate_only": "1",
+    "submit": "1",
+    "no_use_activity": "0"
+}
+
+# 🚀 请求头（模拟浏览器行为）
+HEADERS = {
+    "Referer": "https://freecloud.ltd/server/detail/2378/renew",
+    "Origin": "https://freecloud.ltd",
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36",
+    "X-Requested-With": "XMLHttpRequest"
+}
+
+def renew():
+    session = requests.Session()
+    # session.cookies.update(COOKIES)
+
+    try:
+        print("📡 正在发起续费请求...")
+        response = session.post(RENEW_API, data=RENEW_PAYLOAD, headers=HEADERS, cookies=cookies,verify=False)
+        print(response.text)
+        response.raise_for_status()
+
+        data = response.json()
+
+        if data.get("code") == 1:
+            print("✅ 续费成功！")
+            print("🔁 响应数据：", data)
+        elif data.get("code") == 0:
+            print("⚠️ 不在可续期范围内")
+            print("🕒 到期时间戳：", data.get("time_end"))
+        else:
+            print("❌ 续费失败：", data)
+
+    except requests.exceptions.SSLError as ssl_err:
+        print("❌ SSL 错误：", ssl_err)
+    except requests.exceptions.HTTPError as http_err:
+        print("❌ HTTP 错误：", http_err)
+    except Exception as e:
+        print("❌ 其他错误：", e)
 
 if __name__ == "__main__":
-    if not USERNAME or not PASSWORD:
-        raise ValueError("请设置 FC_USERNAME 和 FC_PASSWORD 环境变量")
-    
-    asyncio.run(renew_service())
+    renew()
+
