@@ -36,10 +36,7 @@ Python 环境变量：
 
 设置 Worker 的访问地址：
 
-
-复制
-编辑
-export FC_URL="https://your-worker-name.username.workers.dev"
+export FC_URL="worker部署地址"
 🚀 部署方法
 1️⃣ 部署 Cloudflare Worker
 登录 Cloudflare，创建一个新的 Worker 项目。
