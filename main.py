@@ -89,8 +89,8 @@ async def renew_service(max_retries=1):
             await human_behavior_simulation(page)
 
             await page.goto("https://freecloud.ltd/server/detail/2378/renew")
-            await asyncio.sleep(1)
-
+            await asyncio.sleep(3)
+            print("url=",page.url)
             if "login" in page.url:
                 print("🔐 未登录，执行登录操作...")
                 await page.goto("https://freecloud.ltd/login", wait_until="networkidle")
