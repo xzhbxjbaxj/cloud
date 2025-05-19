@@ -1,4 +1,4 @@
-name: Auto Renew FreeCloud
+name: 自动
 
 on:
   schedule:
