@@ -17,7 +17,7 @@
 
 ## 🗂️ 文件结构
 
-```bash
+```
 .
 ├── _worker.js    # 主续费逻辑，部署在 Cloudflare Workers
 ├── main.py       # 本地触发脚本，用于访问 Worker 接口
@@ -36,7 +36,7 @@ Python 环境变量：
 
 设置 Worker 的访问地址：
 
-bash
+
 复制
 编辑
 export FC_URL="https://your-worker-name.username.workers.dev"
@@ -53,16 +53,8 @@ export FC_URL="https://your-worker-name.username.workers.dev"
 2️⃣ 本地使用 Python 脚本触发续费
 确保你已经安装 Python 和 requests：
 
-bash
-复制
-编辑
 pip install requests
 然后运行：
-
-bash
-复制
-编辑
-export FC_URL="https://your-worker-name.username.workers.dev"
 python main.py
 ✅ 成功后将输出如：“✅续费成功：当前剩余xx天” 或 “❌还有3天，暂不续费”。
 
@@ -70,15 +62,9 @@ python main.py
 你可以使用 GitHub Actions、Linux cron、或者腾讯云函数等方式每天定时运行 main.py。
 
 示例：Linux cron 任务
-bash
-复制
-编辑
 crontab -e
 添加如下行，每天凌晨 3 点执行续费：
 
-bash
-复制
-编辑
 0 3 * * * export FC_URL="https://your-worker-name.username.workers.dev" && /usr/bin/python3 /path/to/main.py >> /path/to/log.txt 2>&1
 🛡️ 安全与风控说明
 随机浏览器 UA，每次访问模拟不同设备。
