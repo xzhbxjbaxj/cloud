@@ -88,7 +88,8 @@ async def renew_service(max_retries=1):
             page = context.pages[0] if context.pages else await context.new_page()
             await human_behavior_simulation(page)
 
-            await page.goto("https://freecloud.ltd/server/detail/2378/renew")
+            #await page.goto("https://freecloud.ltd/server/detail/2378/renew")
+            await page.goto("https://freecloud.ltd/login")
             await asyncio.sleep(3)
             print("url=",page.url)
             if "login" in page.url:
