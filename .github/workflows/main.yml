@@ -21,6 +21,7 @@ jobs:
       - name: 📦 Install minimal dependencies
         run: |
           python -m pip install --upgrade pip
+          pip install requests
       
       - name: 🔐 Run auto renew script
         env:
