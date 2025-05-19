@@ -27,4 +27,4 @@ jobs:
         run: playwright install --with-deps
 
       - name: 🚀 Run Auto Renew Script
-        run: python renew.py
+        run: python main.py
