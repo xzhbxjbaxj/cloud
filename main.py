@@ -1,7 +1,6 @@
 import requests
-
-url = "https://small-union-d8c6.folxekye28.workers.dev/"
-
+import os
+url=os.getenv("FC_URL")
 try:
     response = requests.get(url)
     response.raise_for_status()
