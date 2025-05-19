@@ -9,7 +9,7 @@ export default {
     const port="2378"
     const LOGIN_URL = "https://freecloud.ltd/login";
     const CONSOLE_URL = "https://freecloud.ltd/member/index"; // 登录后跳转页面
-    const RENEW_URL = f"https://freecloud.ltd/server/detail/{port}/renew"; // 续费接口
+    const RENEW_URL = "https://freecloud.ltd/server/detail/"+port+"/renew"; // 续费接口
 
     // 随机选择一个常见浏览器 User-Agent，模拟正常用户行为
     const userAgents = [
