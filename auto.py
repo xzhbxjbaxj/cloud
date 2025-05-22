@@ -1,4 +1,4 @@
-from playwright,sync_api import sync_playwright
+from playwright.sync_api import sync_playwright
 import os
 import requests
 # from dotenv import load_dotenv
@@ -22,7 +22,7 @@ def send_telegram_message(message):
     return response.json()
 
 
-def check_renewal_status(page，selector, invalid_texts,max_num=10):
+def check_renewal_status(page,selector, invalid_texts,max_num=10):
     num =1
     result_text=""
     while num< max_num:
@@ -52,7 +52,7 @@ def check_renewal_status(page，selector, invalid_texts,max_num=10):
     
     return f"{result_text}"
 
-def login_koyeb(email， password):
+def login_koyeb(email, password):
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=True)
         context = browser.new_context(
