@@ -38,7 +38,7 @@ def check_renewal_status(page，selector, invalid_texts,max_num=10):
             if not element:
                 continue
             # 获取元素文本
-            current_text = element.inner_text()。strip()
+            current_text = element.inner_text().strip()
             print(f"{current_text}")
             # 检查文本是否有效
             if current_text and current_text not in invalid_texts:
@@ -78,8 +78,8 @@ def login_koyeb(email， password):
             page.wait_for_selector("text=点击登录", timeout=60000)
 
             # 填写邮箱和密码
-            page.get_by_placeholder("用户名/邮箱/手机号")。fill(email)
-            page.get_by_placeholder("请输入登录密码")。fill(password)
+            page.get_by_placeholder("用户名/邮箱/手机号").fill(email)
+            page.get_by_placeholder("请输入登录密码").fill(password)
 
             # 勾选协议
             checkbox = "input[name='agree']"
@@ -93,7 +93,7 @@ def login_koyeb(email， password):
                 error_sel = '//div[contains(@class, "jq-icon-error") and contains(@style, "display: block")]'
                 error = page.wait_for_selector(error_sel, timeout=8000)
                 if error:
-                    return f"账号 `{email}` 登录失败：{error。inner_text().strip()}"
+                    return f"账号 `{email}` 登录失败：{error.inner_text().strip()}"
             except :
                 pass
 
