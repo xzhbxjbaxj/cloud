@@ -26,4 +26,4 @@ jobs:
       - name: 🔐 Run auto renew script
         env:
           FC_URL: ${{ secrets.FC_URL }}
-        run: python auto.py
+        run: python main.py
