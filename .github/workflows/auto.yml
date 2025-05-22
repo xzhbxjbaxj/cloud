@@ -1,0 +1,69 @@
+name: Run Login Script
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 0 */3 * *" # 每3天运行一次
+  push:
+    branches:
+      - main
+
+jobs:
+  login:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout 仓库代码
+        uses: actions/checkout@v2
+
+      - name: 安装 Playwright 所需依赖
+        run: |
+          sudo apt-get update
+          # Removed libasound2 from the list
+          sudo apt-get install -y libnss3 libatk1.0-0 libatk-bridge2.0-0 libcups2 libdrm2 libgbm1 libxkbcommon0 libpangocairo-1.0-0 libpango-1.0-0 libcairo2 libdbus-1-3 libatspi2.0-0 libgtk-3-0 libnspr4 libxrandr2 libxcomposite1 libasound2t64 libxdamage1 libxfixes3 libxcursor1 libxi6 libxtst6 libxinerama1
+
+          # Let npx playwright install-deps handle the rest, including audio dependencies
+          npx playwright install-deps
+
+      - name: 设置 Python 环境
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.11.9"
+
+      - name: 安装依赖
+        run: |
+          python -m pip install --upgrade pip
+          pip install --upgrade playwright
+          pip install playwright aiofiles requests
+          pip install playwright requests python-dotenv # 如果你重新使用 dotenv
+
+      - name: Install Playwright Browsers # 安装浏览器
+        run: |
+          pip install playwright
+          python -m playwright install --with-deps
+
+      - name: 运行登录脚本
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          WEBHOST: ${{ secrets.WEBHOST }}
+        run: |
+          set PYTHONIOENCODING=utf8 && xvfb-run python freecloud_login_script.py
+
+      # 上传 Playwright trace
+      - name: Upload Playwright trace
+        if: always() # 始终运行
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-trace
+          path: test-results/ # 跟踪文件所在的路径，确保你的脚本将跟踪文件保存在这里
+
+      # 上传失败 artifacts
+      - name: Upload failure artifacts
+        if: always() # 仅当上一步失败时运行
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-failure-artifacts
+          path: |
+            failure_screenshot.png
+            failure_page.html
