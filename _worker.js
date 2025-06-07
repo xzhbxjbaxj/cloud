@@ -4,9 +4,8 @@ export default {
     // 从环境变量中读取用户名和密码
     const USERNAME = env.FREECLOUD_USERNAME;
     const PASSWORD = env.FREECLOUD_PASSWORD;
-
+    cosnt port=env.FREECLOUD_PORT;
     // 相关接口 URL
-    const port="2378"
     const LOGIN_URL = "https://freecloud.ltd/login";
     const CONSOLE_URL = "https://freecloud.ltd/member/index"; // 登录后跳转页面
     const RENEW_URL = "https://freecloud.ltd/server/detail/"+port+"/renew"; // 续费接口
